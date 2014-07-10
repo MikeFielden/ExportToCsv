@@ -11,7 +11,7 @@
 	}
 }(this, function (_, $) {
 	var options = {};
-	
+
 	if (!_ || !$) {
 		throw new Error('Must have _ and $.');
 	}
@@ -26,17 +26,39 @@
 		csv.push(headers.join(options.colDelim));
 	};
 
+	var buildBody = function ($trs, csv) {
+		var rows = _.map($trs.toArray(), function($tr) {
+			var thing = _.map($tr.children, function ($td) {
+				return $td.innerHTML;
+			});
+
+			thing.push(options.rowDelim);
+
+			return thing;
+		});
+
+		return csv.concat(rows);
+	};
+
 	var exportToCsv = function (selector, userOpts) {
 		var defaultOptions = {
-			colDelim: '","',
-			rowDelim: '"\r\n"',
-			headerRow: true
+			colDelim: ',',
+			rowDelim: '\r\n',
+			headerRow: true,
+			fileName: 'data.csv'
 		};
-		
+
 		var csv = [];
+		var a = document.createElement('a');
+		var blob, url;
 
 		var $table = $(selector);
 		var $theads = $(selector + ' thead th');
+		var $bodyRows = $(selector + ' tbody tr');
+
+		if ($table.length === 0) {
+			throw new Error('Table not found with the selector "' + selector + '"');
+		}
 
 		options = _.defaults(userOpts || {}, defaultOptions);
 
@@ -44,7 +66,26 @@
 			buildHeaderRow($theads, csv);
 		}
 
-		console.log(csv);
+		csv = buildBody($bodyRows, csv);
+
+		// Hide it
+		a.style = 'display: none';
+
+		this.download = function () {
+			// Append it
+			document.body.appendChild(a);
+
+			// Blob
+			blob = new Blob(csv, {type: 'octet/stream'});
+			url = window.URL.createObjectURL(blob);
+
+			a.href = url;
+			a.download = options.fileName;
+			a.click();
+
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		};
 	}
 
 	return exportToCsv;
