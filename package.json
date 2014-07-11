@@ -1,27 +1,26 @@
 {
-	"name": "ExportToCsv",
-	"version": "0.0.1",
-	"description": "Export things to csv",
-	"scripts": {
-		"test": "mocha test"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/MikeFielden/ExportToCsv.git"
-	},
-
-	"devDependencies": {
-		"mocha": "^1.20.1",
-		"assert": "^1.1.1"
-	},
-	"license": "MIT",
-
-	"author": {
-		"name": "Mike Fielden Jr.",
-		"email": "fielden.mike@gmail.com"
-	},
-	"bugs": {
-		"url": "https://github.com/MikeFielden/ExportToCsv/issues"
-	},
-	"homepage": "https://github.com/MikeFielden/ExportToCsv"
+  "name": "ExportToCsv",
+  "version": "0.0.2",
+  "description": "Export things to csv",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MikeFielden/ExportToCsv.git"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-qunit": "^0.3.3",
+    "qunitjs": "^1.14.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Mike Fielden Jr.",
+    "email": "fielden.mike@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/MikeFielden/ExportToCsv/issues"
+  },
+  "homepage": "https://github.com/MikeFielden/ExportToCsv"
 }
