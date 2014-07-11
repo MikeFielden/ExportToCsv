@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/MikeFielden/ExportToCsv.svg?branch=master)](https://travis-ci.org/MikeFielden/ExportToCsv)
+
 ExportToCsv
 ===========
 
