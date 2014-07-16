@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var jasmine = require('gulp-jasmine');
 var jsmin = require('gulp-jsmin');
 var rename = require('gulp-rename');
+var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 
 gulp.task('default', function() {
     return gulp.src('./index.js')
@@ -18,6 +19,6 @@ gulp.task('default', function() {
 });
 
 gulp.task('test', function() {
-    return gulp.src('./spec/exportToCsvSpec.js')
-        .pipe(jasmine());
+    return gulp.src('./SpecRunner.html')
+        .pipe(jasminePhantomJs());
 });

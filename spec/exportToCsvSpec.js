@@ -11,6 +11,10 @@ describe('Options tests', function () {
 		csv = new exportToCsv('table', {autoDownload: false});
 	});
 
+	it('should throw an error if the selector isnt found', function () {
+		expect(function () { new exportToCsv('adsfasdf', {autoDownload: false}); }).toThrow();
+	});
+
 	it('should be defined', function () {
 		expect(csv).toBeDefined();
 	});
@@ -24,8 +28,21 @@ describe('Options tests', function () {
 	});
 });
 
+describe('Array tests', function () {
+	var csv;
+
+	beforeEach(function () {
+		csv = new exportToCsv([6,7,8,9, "Things", "Other things"], {autoDownload: false});
+	});
+
+	it('should allow array to be passed as arg[0]', function () {
+		expect(csv).toBeDefined();
+	});
+});
+
+
 // QUnit.test('Should accept plain array', function (assert) {
-// 	var csv = new exportToCsv([6,7,8,9, "Things", "Other things"], {autoDownload: false});
+
 
 // 	assert.notEqual(csv, undefined);
 // });
