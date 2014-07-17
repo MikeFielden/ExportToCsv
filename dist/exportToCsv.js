@@ -93,8 +93,6 @@
 		return csv.concat(output);
 	};
 
-
-
 	/**
 	 * exportToCsv()
 	 * Main function, does all the lifting
@@ -166,6 +164,12 @@
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		};
+
+		this._buildArrayHeaderRow = buildArrayHeaderRow;
+		this._buildArrayBody = buildArrayBody;
+
+		this._buildDOMHeaderRow = buildDOMHeaderRow;
+		this._buildDOMBody = buildDOMBody;
 
 		if (options.autoDownload) {
 			this.download();
