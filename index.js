@@ -1,5 +1,5 @@
 /**
- * Should be compatible with AMD, CommonJS, Nodejs and browsers (cross-browser)
+ * Should be compatible with AMD and CommonJS
  *
  * Author: Mike Fielden, @Mike_Fielden, fielden.mike@gmail.com
  */
