@@ -1,5 +1,5 @@
 /**
- * Should be compatible with AMD, CommonJS, Nodejs and browsers (cross-browser)
+ * Should be compatible with AMD and CommonJS
  *
  * Author: Mike Fielden, @Mike_Fielden, fielden.mike@gmail.com
  */
@@ -56,12 +56,41 @@
 		return csv.concat(rows);
 	};
 
+	/**
+	 * buildArrayHeaderRow()
+	 * Builds the header of the csv
+	 * Alters the main csv array
+	 *
+	 * @param <Array> input
+	 * @param <Array> csv
+	 * @return nothing
+	 */
 	var buildArrayHeaderRow = function (input, csv) {
+		var header = _.keys(input[0]);
 
+		header.push(options.rowDelim);
+
+		csv.push(header.join(options.colDelim));
 	};
 
+	/**
+	 * [{itemName: "Milk", price: 1.25},
+	 *	{itemName: "Ice cream", price: 99.00} ..... ]
+	 *
+	 *
+	 * @param <Array> input
+	 * @param <Array> csv
+	 * @return newly concated csv
+	 */
 	var buildArrayBody = function (input, csv) {
+		var output = _.map(input, function (item) {
+			var values = _.values(item);
 
+			values.push(options.rowDelim);
+			return values.join(options.colDelim);
+		});
+
+		return csv.concat(output);
 	};
 
 
@@ -101,7 +130,7 @@
 
 			csv = buildArrayBody(selector, csv);
 
-		} else {
+		} else if(_.isString(selector)) {
 			$table = $(selector);
 			$theads = $(selector + ' thead th');
 			$bodyRows = $(selector + ' tbody tr');
@@ -115,6 +144,8 @@
 			}
 
 			csv = buildDOMBody($bodyRows, csv);
+		} else {
+			throw new Error('argument[0] must be either a string or an array');
 		}
 
 		// Hide it

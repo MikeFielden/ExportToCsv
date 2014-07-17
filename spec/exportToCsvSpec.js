@@ -15,6 +15,10 @@ describe('Options tests', function () {
 		expect(function () { new exportToCsv('adsfasdf', {autoDownload: false}); }).toThrow();
 	});
 
+	it('should throw an error if the arg[0] is not [] or string', function () {
+		expect(function () { new exportToCsv({}, {autoDownload: false}); }).toThrow();
+	});
+
 	it('should be defined', function () {
 		expect(csv).toBeDefined();
 	});
@@ -38,11 +42,6 @@ describe('Array tests', function () {
 	it('should allow array to be passed as arg[0]', function () {
 		expect(csv).toBeDefined();
 	});
+
+
 });
-
-
-// QUnit.test('Should accept plain array', function (assert) {
-
-
-// 	assert.notEqual(csv, undefined);
-// });
