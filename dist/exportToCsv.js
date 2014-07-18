@@ -5,26 +5,55 @@
  */
 (function (root, factory) {
 	if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('lodash'));
+		module.exports = factory();
 	} else if(typeof define === "function" && define.amd) {
-		define(["lodash"], factory);
+		define([], factory);
 	} else {
-		root.exportToCsv = factory(root._);
+		root.exportToCsv = factory();
 	}
-}(this, function (_) {
+}(this, function () {
 	var options = {};
+
+	var helpers = {
+		getValues: function (object) {
+			var index = -1,
+				props = Object.keys(object),
+				length = props.length,
+				result = Array(length);
+
+			while (++index < length) {
+				result[index] = object[props[index]];
+			}
+			return result;
+		},
+		isString: function (value) {
+			return typeof value == 'string' || value && typeof value == 'object' && toString.call(value) == '[object String]' || false;
+		},
+		defaults: function(obj) {
+			Array.prototype.forEach.call(Array.prototype.slice.call(arguments, 1), function(source) {
+				if (source) {
+					for (var prop in source) {
+						if (obj[prop] === void 0) obj[prop] = source[prop];
+					}
+				}
+			});
+
+			return obj;
+		}
+	};
+
 
 	/**
 	 * buildDOMHeaderRow()
 	 * Builds the header of the csv
 	 * Alters the main csv array
 	 *
-	 * @param <jqObj> $theads
+	 * @param <NodeList> $theads
 	 * @param <Array> csv
 	 * @return nothing
 	 */
 	var buildDOMHeaderRow = function ($theads, csv) {
-		var headers = _.map($theads, function (el) {
+		var headers = [].map.call($theads, function (el) {
 							return el.innerHTML;
 						});
 
@@ -38,13 +67,13 @@
 	 * Builds the body of the csv
 	 * Alters the main csv array
 	 *
-	 * @param <jqObj> $trs
+	 * @param <NodeList> $trs
 	 * @param <Array> csv
 	 * @return <Array> newly concated csv
 	 */
 	var buildDOMBody = function ($trs, csv) {
-		var rows = _.map($trs, function($tr) {
-			var thing = _.map($tr.children, function ($td) {
+		var rows = [].map.call($trs, function($tr) {
+			var thing = [].map.call($tr.children, function ($td) {
 				return $td.innerHTML;
 			});
 
@@ -66,7 +95,13 @@
 	 * @return nothing
 	 */
 	var buildArrayHeaderRow = function (input, csv) {
-		var header = _.keys(input[0]);
+		var header;
+
+		if (typeof input[0] !== 'object') {
+			header = [];
+		} else {
+			header = Object.keys(input[0]);
+		}
 
 		header.push(options.rowDelim);
 
@@ -83,11 +118,17 @@
 	 * @return newly concated csv
 	 */
 	var buildArrayBody = function (input, csv) {
-		var output = _.map(input, function (item) {
-			var values = _.values(item);
+		var output = [].map.call(input, function (item) {
+			var valArr;
 
-			values.push(options.rowDelim);
-			return values.join(options.colDelim);
+			if (typeof item !== 'object') {
+				valArr = [item];
+			} else {
+				valArr = helpers.getValues(item);
+			}
+
+			valArr.push(options.rowDelim);
+			return valArr.join(options.colDelim);
 		});
 
 		return csv.concat(output);
@@ -115,20 +156,16 @@
 		var $table, $theads, $bodyRows;
 		var blob, url;
 
-		if (!_) {
-			throw new Error('Must have _');
-		}
+		options = helpers.defaults(userOpts || {}, defaultOptions);
 
-		options = _.defaults(userOpts || {}, defaultOptions);
-
-		if (_.isArray(selector) && selector.length > 0) {
+		if (Array.isArray.call(this, selector) && selector.length > 0) {
 			if (options.headerRow) {
 				buildArrayHeaderRow(selector, csv);
 			}
 
 			csv = buildArrayBody(selector, csv);
 
-		} else if(_.isString(selector)) {
+		} else if(helpers.isString(selector)) {
 			$table = document.querySelectorAll(selector);
 			$theads = document.querySelectorAll(selector + ' thead th');
 			$bodyRows = document.querySelectorAll(selector + ' tbody tr');
