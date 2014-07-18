@@ -50,7 +50,7 @@
 
 			thing.push(options.rowDelim);
 
-			return thing;
+			return thing.join(options.colDelim);
 		});
 
 		return csv.concat(rows);
