@@ -5,13 +5,13 @@
  */
 (function (root, factory) {
 	if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("jquery"), require('lodash'));
+		module.exports = factory(require('lodash'));
 	} else if(typeof define === "function" && define.amd) {
-		define(["jquery", "lodash"], factory);
+		define(["lodash"], factory);
 	} else {
-		root.exportToCsv = factory(root.$, root._);
+		root.exportToCsv = factory(root._);
 	}
-}(this, function ($, _) {
+}(this, function (_) {
 	var options = {};
 
 	/**
@@ -24,7 +24,7 @@
 	 * @return nothing
 	 */
 	var buildDOMHeaderRow = function ($theads, csv) {
-		var headers = _.map($theads.toArray(), function (el) {
+		var headers = _.map($theads, function (el) {
 							return el.innerHTML;
 						});
 
@@ -43,7 +43,7 @@
 	 * @return <Array> newly concated csv
 	 */
 	var buildDOMBody = function ($trs, csv) {
-		var rows = _.map($trs.toArray(), function($tr) {
+		var rows = _.map($trs, function($tr) {
 			var thing = _.map($tr.children, function ($td) {
 				return $td.innerHTML;
 			});
@@ -115,8 +115,8 @@
 		var $table, $theads, $bodyRows;
 		var blob, url;
 
-		if (!_ || !$) {
-			throw new Error('Must have _ and $.');
+		if (!_) {
+			throw new Error('Must have _');
 		}
 
 		options = _.defaults(userOpts || {}, defaultOptions);
@@ -129,9 +129,9 @@
 			csv = buildArrayBody(selector, csv);
 
 		} else if(_.isString(selector)) {
-			$table = $(selector);
-			$theads = $(selector + ' thead th');
-			$bodyRows = $(selector + ' tbody tr');
+			$table = document.querySelectorAll(selector);
+			$theads = document.querySelectorAll(selector + ' thead th');
+			$bodyRows = document.querySelectorAll(selector + ' tbody tr');
 
 			if ($table.length === 0) {
 				throw new Error('Table not found with the selector "' + selector + '"');

@@ -162,7 +162,7 @@ describe('DOM header tests', function () {
 	});
 
 	it('should return the proper headers', function () {
-		e2csv._buildDOMHeaderRow($('thead th'), fakeCsv);
+		e2csv._buildDOMHeaderRow($('thead th').toArray(), fakeCsv);
 
 		// Only header returned
 		expect(fakeCsv.length).toBe(1);
@@ -194,7 +194,7 @@ describe('DOM body tests', function () {
 	});
 
 	it('should return the proper headers', function () {
-		var rtnCsv = e2csv._buildDOMBody($('tbody tr'), fakeCsv);
+		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
 
 		// Only header returned
 		expect(rtnCsv.length).toBe(4);
