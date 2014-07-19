@@ -156,6 +156,11 @@
 		var $table, $theads, $bodyRows;
 		var blob, url;
 
+		// Auto-initialization
+		if (!(this instanceof exportToCsv)) {
+			return new exportToCsv(selector, userOpts);
+		}
+
 		options = helpers.defaults(userOpts || {}, defaultOptions);
 
 		if (Array.isArray.call(this, selector) && selector.length > 0) {

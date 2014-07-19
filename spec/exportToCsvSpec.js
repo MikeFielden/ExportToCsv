@@ -35,6 +35,20 @@ function setUpHtmlFixture() {
 	jasmine.getFixtures().set(table);
 }
 
+describe('auto-init constructor', function () {
+	beforeEach(function () {
+		setUpHtmlFixture();
+	});
+
+	it('should function properly with the "new" keyword', function () {
+		expect(new exportToCsv('table', {autoDownload: false})).toBeDefined();
+	});
+
+	it('should function properly without the "new" keyword', function () {
+		expect(exportToCsv('table', {autoDownload: false})).toBeDefined();
+	});
+});
+
 describe('Options tests', function () {
 	var csv;
 
