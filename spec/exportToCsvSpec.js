@@ -3,14 +3,14 @@ function setUpHtmlFixture() {
 		'<table>',
 			'<thead>',
 				'<tr>',
-					'<th>One</th>',
+					'<th><b>One</b></th>',
 					'<th>Two</th>',
 					'<th>Three</th>',
 				'</tr>',
 			'</thead>',
 		  '<tbody>',
 		  	'<tr>',
-		  		'<td>item 1</td>',
+		  		'<td><b>item 1</b></td>',
 		  		'<td>item 2</td>',
 		  		'<td>item 3</td>',
 		  	'</tr>',
@@ -76,6 +76,34 @@ describe('Options tests', function () {
 		csv.download();
 
 		expect(csv.download).toHaveBeenCalled();
+	});
+});
+
+describe('Handles html properly', function () {
+	var rowDelim, e2csv;
+	var fakeCsv = [];
+
+	beforeEach(function () {
+		setUpHtmlFixture();
+
+		rowDelim = '\r\n';
+
+		e2csv = new exportToCsv('table', {
+			autoDownload: false,
+			rowDelim: rowDelim
+		});
+	});
+
+	it('should function properly with the "new" keyword for body', function () {
+		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
+
+		expect(rtnCsv[0].contains('<b>')).toBe(false);
+	});
+
+	it('should function properly with the "new" keyword for header', function () {
+		e2csv._buildDOMHeaderRow($('thead th').toArray(), fakeCsv);
+
+		expect(fakeCsv[0].contains('<b>')).toBe(false);
 	});
 });
 

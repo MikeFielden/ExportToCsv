@@ -54,7 +54,7 @@
 	 */
 	var buildDOMHeaderRow = function ($theads, csv) {
 		var headers = [].map.call($theads, function (el) {
-							return el.innerHTML;
+							return el.innerHTML.replace(/<(?:.|\n)*?>/gm, '');
 						});
 
 		headers.push(options.rowDelim);
@@ -74,7 +74,7 @@
 	var buildDOMBody = function ($trs, csv) {
 		var rows = [].map.call($trs, function($tr) {
 			var thing = [].map.call($tr.children, function ($td) {
-				return $td.innerHTML;
+				return $td.innerHTML.replace(/<(?:.|\n)*?>/gm, '');
 			});
 
 			thing.push(options.rowDelim);
