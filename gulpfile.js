@@ -28,8 +28,7 @@ gulp.task('test', ['default'], function() {
 	return gulp.src('./SpecRunner.html')
 			.pipe(jasminePhantomJs())
 			.on("error", function (err) {
-				console.log(arguments);
-				this.emit('end');
+				process.exit(1);
 			});
 });
 

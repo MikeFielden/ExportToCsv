@@ -14,21 +14,6 @@ function setUpHtmlFixture() {
 		  		'<td>item 2</td>',
 		  		'<td>item 3</td>',
 		  	'</tr>',
-		  	'<tr>',
-		  		'<td>item 4</td>',
-		  		'<td>item 5</td>',
-		  		'<td>item 6</td>',
-		  	'</tr>',
-		  	'<tr>',
-		  		'<td>item 7</td>',
-		  		'<td>item 8</td>',
-		  		'<td>item 9</td>',
-		  	'</tr>',
-		  	'<tr>',
-		  		'<td>item 24</td>',
-		  		'<td>item 25</td>',
-		  		'<td>item 36</td>',
-		  	'</tr>',
 		  '</tbody>',
 		'</table>'
 	].join();
@@ -122,13 +107,17 @@ describe('Handles html properly', function () {
 	it('should function properly with the "new" keyword for body', function () {
 		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
 
-		expect(rtnCsv[0].contains('<b>')).toBe(false);
+		expect(rtnCsv[0].indexOf('<b>')).toBe(-1);
 	});
 
 	it('should function properly with the "new" keyword for header', function () {
 		e2csv._buildDOMHeaderRow($('thead th').toArray(), fakeCsv);
 
-		expect(fakeCsv[0].contains('<b>')).toBe(false);
+		expect(fakeCsv[0].indexOf('<b>')).toBe(-1);
+	});
+
+	afterEach(function () {
+		fakeCsv.length = 0;
 	});
 });
 
@@ -286,6 +275,6 @@ describe('DOM body tests', function () {
 		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
 
 		// Only header returned
-		expect(rtnCsv.length).toBe(4);
+		expect(rtnCsv.length).toBe(1);
 	});
 });
