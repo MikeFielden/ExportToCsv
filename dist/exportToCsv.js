@@ -74,7 +74,7 @@
 	var buildDOMBody = function ($trs, csv) {
 		var rows = [].map.call($trs, function($tr) {
 			var thing = [].map.call($tr.children, function ($td) {
-				return $td.innerHTML.replace(/<(?:.|\n)*?>/gm, '');
+				return '"' + $td.innerHTML.replace(/<(?:.|\n)*?>/gm, '') + '"';
 			});
 
 			thing.push(options.rowDelim);
@@ -207,6 +207,7 @@
 			document.body.removeChild(a);
 		};
 
+		// The following functions are exposed for testing purposes
 		this._buildArrayHeaderRow = buildArrayHeaderRow;
 		this._buildArrayBody = buildArrayBody;
 

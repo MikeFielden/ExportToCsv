@@ -1,2 +1,6 @@
 node_modules
 *.xml
+
+*.sublime-project
+
+*.sublime-workspace

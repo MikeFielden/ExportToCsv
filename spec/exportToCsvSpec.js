@@ -32,8 +32,33 @@ function setUpHtmlFixture() {
 		  '</tbody>',
 		'</table>'
 	].join();
+
 	jasmine.getFixtures().set(table);
 }
+
+function setUpNoDataTdFixture() {
+	var table = [
+		'<table>',
+			'<thead>',
+				'<tr>',
+					'<th><b>One</b></th>',
+					'<th>Two</th>',
+					'<th>Three</th>',
+				'</tr>',
+			'</thead>',
+		  '<tbody>',
+		  	'<tr>',
+		  		'<td></td>',
+		  		'<td>One,Two,Three,Four</td>',
+		  		'<td></td>',
+		  	'</tr>',
+		  '</tbody>',
+		'</table>'
+	].join();
+
+	jasmine.getFixtures().set(table);
+}
+
 
 describe('auto-init constructor', function () {
 	beforeEach(function () {
@@ -104,6 +129,28 @@ describe('Handles html properly', function () {
 		e2csv._buildDOMHeaderRow($('thead th').toArray(), fakeCsv);
 
 		expect(fakeCsv[0].contains('<b>')).toBe(false);
+	});
+});
+
+describe('Handle special cases in td', function () {
+	var rowDelim, e2csv;
+	var fakeCsv = [];
+
+	beforeEach(function () {
+		setUpNoDataTdFixture();
+
+		rowDelim = '\r\n';
+
+		e2csv = new exportToCsv('table', {
+			autoDownload: false,
+			rowDelim: rowDelim
+		});
+	});
+
+	it('should handle <td></td> properly', function () {
+		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
+
+		expect(rtnCsv.length).toBe(1);
 	});
 });
 
@@ -235,7 +282,7 @@ describe('DOM body tests', function () {
 		fakeCsv.length = 0;
 	});
 
-	it('should return the proper headers', function () {
+	it('should return the proper body stuffs', function () {
 		var rtnCsv = e2csv._buildDOMBody($('tbody tr').toArray(), fakeCsv);
 
 		// Only header returned
